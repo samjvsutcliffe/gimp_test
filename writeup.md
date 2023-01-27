@@ -16,14 +16,6 @@ To fix this the GIMP elements must be able to have less than 16 nodes in their "
 To reproduce:
 
 Compile the latest MPM build on master, and add the build to your PATH
-Grab pycbg adjusted to generate 2D meshes by using a local forked version:
-You need to install this local version using pip install -e
-```
-git clone https://github.com/samjvsutcliffe/pycbg.git
-cd pycbg
-git switch improve/mpmxdem
-pip3 install -e ./
-```
 
 Grab the test 1D consolidation problems, available at:
 https://github.com/samjvsutcliffe/gimp_test
@@ -40,6 +32,18 @@ pip3 install pandas matplotlib tables
 python3 evaluation.py
 ```
 You can also look at the shear stresses in the VTKs generated, which will be large ~1000MPa RMS.
+
+To generate these meshes you will need the latest branch of pycbg for 2d mesh generation and 2d GIMP.
+
+This can be done by using a local install of the mirrored version.
+
+You need to install this local version using pip install -e
+```
+git clone https://github.com/samjvsutcliffe/pycbg.git
+cd pycbg
+git switch improve/mpmxdem
+pip3 install -e ./
+```
 
 # Expected behavior
 For a 1d consolidation we expect no shear stresses.
