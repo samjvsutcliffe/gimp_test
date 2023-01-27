@@ -1,5 +1,5 @@
 import pycbg.preprocessing as utl
-from pycbg.mesh import Mesh
+from pycbg.preprocessing import Mesh
 import numpy as np
 import math
 dt = 1e-2
@@ -25,7 +25,7 @@ pmesh = utl.Mesh(dimensions=particle_dims,origin=(0,0,0), ncells=[x//r for x,r i
 
 #Set particles to fill particle mesh
 mps_per_cell = 4
-sim.particles = utl.Particles(pmesh,mps_per_cell,directory=sim.directory,particle_type="")
+sim.particles = utl.Particles(pmesh,mps_per_cell,directory=sim.directory)
 
 sim.init_entity_sets()
 sim.particles._filename = "particles.txt"

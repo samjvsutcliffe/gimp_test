@@ -16,15 +16,16 @@ for name in ["mpm","gimp"]:
     h5_files = [f for f in files if p.match(f)]
     df = pd.read_hdf(dir_full+h5_files[-1])
     sim_files.append(df)
-sim_names.append("own")
-df = pd.read_csv("column_mpm.csv")
-sim_files.append(df)
+#Compared to another GIMP implementation
+#sim_names.append("own")
+#df = pd.read_csv("column_mpm.csv")
+#sim_files.append(df)
 
 plt.figure()
 plt.suptitle("Shear stress")
 for i,(name,df) in enumerate(zip(sim_names,sim_files)):
     print("Type: {}".format(name))
-    print("Total shear stress: {}".format(df["tau_xy"].abs().sum()))
+    print("Total shear stress: {}".format(np.sqrt(df["tau_xy"].pow(2).mean())))
     #plt.figure()
     plt.subplot(1,len(sim_names),i+1)
     plt.scatter(df["coord_x"],df["coord_y"],c=df["tau_xy"])
@@ -42,8 +43,8 @@ for i,(name,df) in enumerate(zip(sim_names,sim_files)):
 plt.figure()
 plt.suptitle("Vertical stress")
 for i,(name,df) in enumerate(zip(sim_names,sim_files)):
-    print("Type: {}".format(name))
-    print("Total shear stress: {}".format(df["tau_xy"].abs().sum()))
+    #print("Type: {}".format(name))
+    #print("Total shear stress: {}".format(df["tau_xy"].abs().sum()))
     #plt.figure()
     plt.subplot(1,len(sim_names),i+1)
     plt.scatter(df["coord_x"],df["coord_y"],c=df["stress_yy"])
