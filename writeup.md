@@ -9,7 +9,7 @@ This can be easily seen with a 1D consolidation problem.
 The second issue is that (at least for the pycbg generated meshes) the GIMP elements do not actually cross the cells, they are only smoother inside of the cell.
 If you generate a mesh that has 16 nodes per cell with the correct behaviour, you end up with boundary nodes not having enough nodes for the GIMP element.
 
-To fix this the GIMP elements must be able to have less than 16 nodes in their "stencil".
+To fix this the GIMP elements must be able to have less than 16 nodes in their "stencil" to account for the boundaries.
 
 
 # Reproduce
@@ -39,14 +39,14 @@ The evaluation will draw final shear stress plots, along with vertical stresses.
 pip3 install pandas matplotlib tables
 python3 evaluation.py
 ```
-You can also look at the shear stresses in the VTKs generated, which will be considarably large.
+You can also look at the shear stresses in the VTKs generated, which will be large ~1000MPa RMS.
 
 # Expected behavior
 For a 1d consolidation we expect no shear stresses.
 This should be true for MPM/GIMP.
-
 We should also expect better continuity over cell boundaries for the GIMP case.
 
+What we find is spurious shear stress for GIMP in the order of 1000MPa RMS, and cell crossing issues due to the lack of cross cell-continuity.
 
 # Screenshots
 
@@ -57,6 +57,12 @@ MPM 1D consolidation:
 GIMP 1D consolidation:
 
 ![image](https://user-images.githubusercontent.com/117826225/215151055-2a6afebe-a633-409f-9057-bf1cc48c05cb.png)
+
+Vertical stress distributions for both:
+
+![image](https://user-images.githubusercontent.com/117826225/215158604-5477ad27-7925-4ace-915e-b8316116cf5d.png)
+
+
 
 **Runtime environment (please complete the following information):**
  - OS/Docker image: Ubuntu 20/WSL
