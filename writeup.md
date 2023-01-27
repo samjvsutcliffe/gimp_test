@@ -6,26 +6,60 @@ When using pycbg/GMSH to output nodes on the improve/mpmxdem branch gimp cells a
 The 2D elements have incorrect shearing behaviour due to this, and the 3D elements have incorrect shear in one dimension but not the other.
 This can be easily seen with a 1D consolidation problem.
 
+The second issue is that (at least for the pycbg generated meshes) the GIMP elements do not actually cross the cells, they are only smoother inside of the cell.
+If you generate a mesh that has 16 nodes per cell with the correct behaviour, you end up with boundary nodes not having enough nodes for the GIMP element.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-Compile the latest MPM branch
-Grab some test 1D consolidation problems, available at:
+To fix this the GIMP elements must be able to have less than 16 nodes in their "stencil".
 
-2. Run on '....'
-3. On condition '....'
-4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+# Reproduce
+To reproduce:
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+Compile the latest MPM build on master, and add the build to your PATH
+Grab pycbg adjusted to generate 2D meshes by using a local forked version:
+You need to install this local version using pip install -e
+```
+git clone https://github.com/samjvsutcliffe/pycbg.git
+cd pycbg
+git switch improve/mpmxdem
+pip3 install -e ./
+```
+
+Grab the test 1D consolidation problems, available at:
+https://github.com/samjvsutcliffe/gimp_test
+
+You can run all of the tests with 
+```
+./run_tests
+```
+
+Afterwards you can run the evaluation.py with python3, pandas, matplotlib, and pytables.
+The evaluation will draw final shear stress plots, along with vertical stresses.
+```
+pip3 install pandas matplotlib tables
+python3 evaluation.py
+```
+You can also look at the shear stresses in the VTKs generated, which will be considarably large.
+
+# Expected behavior
+For a 1d consolidation we expect no shear stresses.
+This should be true for MPM/GIMP.
+
+We should also expect better continuity over cell boundaries for the GIMP case.
+
+
+# Screenshots
+
+MPM 1D consolidation:
+
+![image](https://user-images.githubusercontent.com/117826225/215151109-8e441e97-3b01-4f49-b19e-53da67071664.png)
+
+GIMP 1D consolidation:
+
+![image](https://user-images.githubusercontent.com/117826225/215151055-2a6afebe-a633-409f-9057-bf1cc48c05cb.png)
 
 **Runtime environment (please complete the following information):**
- - OS/Docker image:
- - Branch [e.g. develop]
+ - OS/Docker image: Ubuntu 20/WSL
+ - Branch: develop
 
-**Additional context**
-Add any other context about the problem here.
 
