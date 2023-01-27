@@ -7,7 +7,7 @@ The 2D elements have incorrect shearing behaviour due to this, and the 3D elemen
 This can be easily seen with a 1D consolidation problem.
 
 The second issue is that (at least for the pycbg generated meshes) the GIMP elements do not actually cross the cells, they are only smoother inside of the cell.
-If you generate a mesh that has 16 nodes per cell with the correct behaviour, you end up with boundary nodes not having enough nodes for the GIMP element.
+If you were to generate a mesh that has 16 nodes per cell with the correct behaviour, you end up with boundary cells not having enough nodes for the GIMP element.
 
 To fix this the GIMP elements must be able to have less than 16 nodes in their "stencil" to account for the boundaries.
 
@@ -68,8 +68,12 @@ Vertical stress distributions for both:
 
 
 
-**Runtime environment (please complete the following information):**
+# Runtime environment (please complete the following information):
  - OS/Docker image: Ubuntu 20/WSL
  - Branch: develop
 
+# Fix?
 
+One fix for this is to still output 16 nodes in the meshing program, but when reading them in discard out of bounds nodes (i.e. write them as -1 on the mesh file).
+This allows the nodels local coordinates to still be indexable from their read-in position in node list for each element.
+I implemented this quick fix locally, but it also requries an element allocated per cell, as the local mapping is generated at read time & unique.
