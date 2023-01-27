@@ -69,7 +69,7 @@ Vertical stress distributions for both:
 
 
 # Runtime environment (please complete the following information):
- - OS/Docker image: Ubuntu 20/WSL
+ - OS/Docker image: Ubuntu 20.04/WSL
  - Branch: develop
 
 # Fix?
